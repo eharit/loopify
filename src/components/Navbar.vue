@@ -15,7 +15,7 @@
       <div class="nav-right nav-menu">
         <router-link to="/" class="nav-item is-tab is-hidden-tablet">Home</router-link>
         <router-link to="/login" class="nav-item is-tab is-hidden-tablet">Login</router-link>
-        <a class="nav-item is-tab">
+        <a class="nav-item is-tab" v-if="$root.store.user.uid">
           <figure class="image is-16x16" style="margin-right: 8px;">
             <img :src="$root.store.user.photoURL" >
           </figure>
