@@ -40,11 +40,13 @@ new Vue({
     posts: postRef,
   },
   methods: {
-    addPost(post) {
-      postRef.push(post || {
-        title: 'Rezeda',
-        body: 'LoremIpsum',
-      });
+    createPost(post) {
+      const newPost = {
+        id: JSON.stringify(new Date().getTime()),
+        body: post.body,
+        title: post.title,
+      };
+      postRef.push(newPost);
     },
     logOut() {
       firebase.auth().signOut();

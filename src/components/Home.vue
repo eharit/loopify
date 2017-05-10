@@ -5,10 +5,10 @@
       <div class="hero-body">
         <div class="container">
           <h1 class="title">
-            Posts
+            Microblog
           </h1>
           <h2 class="subtitle">
-            of the Great Uncertainity
+            the tiniest blog all time
           </h2>
         </div>
       </div>
@@ -18,40 +18,43 @@
       <div class="container">
         <div class="columns is-multiline">
           <div class="column is-one-third-desktop is-half-tablet" v-for="post in posts">
-            <div class="box" :data-id="post['.key']">
+            <div class="box" :data-id="post.id">
               <button v-if="store.user.uid" class="delete is-small is-pulled-right" @click="$root.removePost(post)"></button>
-              <h3 class="title">{{post.title}}</h3>
-              <medium-editor
-              :text.sync="post.body"
-              @edit="applyTextEdit(post)"
-              :options=" {
-                toolbar: {buttons: ['bold', 'strikethrough', 'h1']}
-              }"></medium-editor>
+              <h2 class="title"><router-link :to="{name: 'Post', params: { id: post.id}}">{{post.title}}</router-link></h2>
+              <h3 class="subtitle">{{niceDate(post.id)}}</h3>
+              <p v-html="truncate(post.body, 200, '…')"></p>
               <!-- <button type="button" name="button" @click="$root.updatePost(post)">Update</button> -->
             </div>
           </div>
           <div class="column is-one-third-desktop is-half-tablet" v-if="store.user.uid">
-            <div class="title" v-if="addPostClosed">
-              <a id="add-post" href="#" @click="openAddPost">+</a>
+            <div class="title" v-if="createPostClosed">
+              <a id="add-post" @click="opencreatePost">+</a>
             </div>
-            <div class="box" v-if="!addPostClosed">
-              <button v-if="store.user.uid" class="delete is-small is-pulled-right" @click="closeAddPost"></button>
+            <div class="box" v-if="!createPostClosed">
+              <button v-if="store.user.uid" class="delete is-small is-pulled-right" @click="closecreatePost"></button>
               <div class="title">
                 New Post
               </div>
+              <b-field>
+                  <b-input
+                    name="postTitle"
+                    minlength="3"
+                    maxlength="100"
+                    v-model="newPost.title"
+                    placeholder="Title">
+                  </b-input>
+              </b-field>
+              <b-field>
+                <b-input
+                maxlength="200"
+                type="textarea"
+                v-model="newPost.body"
+                placeholder="Text">
+              </b-input>
+              </b-field>
               <div class="field">
                 <p class="control">
-                  <input class="input" type="text" name="postTitle" v-model="newPost.title" placeholder="Title">
-                </p>
-              </div>
-              <div class="field">
-                <p class="control">
-                  <textarea class="textarea" name="postBody" rows="8" cols="80" v-model="newPost.body" placeholder="Text"></textarea>
-                </p>
-              </div>
-              <div class="field">
-                <p class="control">
-                  <button class="button is-success" type="button" name="submit" @click="addPost(newPost)">Submit</button>
+                  <button class="button is-success" type="button" name="submit" @click="createPost(newPost)">Add New Post</button>
                 </p>
               </div>
             </div>
@@ -70,9 +73,7 @@
 </template>
 
 <script>
-import editor from 'vue2-medium-editor';
-
-require('../assets/medium-editor-master/dist/css/medium-editor.min.css');
+import moment from 'moment';
 
 export default {
   name: 'home',
@@ -85,32 +86,34 @@ export default {
         body: '',
       },
       log: '',
-      addPostClosed: true,
+      createPostClosed: true,
     };
   },
   methods: {
-    addPost(post) {
-      this.$root.addPost(post);
+    getPostId(post) {
+      this.log = post;
+    },
+    niceDate(id) {
+      return moment(Date(id)).calendar();
+    },
+    truncate(value, length, omission) {
+      if (value.length <= length) return value;
+      return value.substring(0, parseInt(length, 10)) + omission.toString();
+    },
+    createPost(post) {
+      this.$root.createPost(post);
       this.newPost.title = '';
       this.newPost.body = '';
-      this.addPostClosed = true;
+      this.createPostClosed = true;
     },
-    applyTextEdit(post) {
-      const key = post['.key'];
-      // const text = this.posts.find(e => e['.key'] === post['.key']).body;
-      const text = document.querySelector(`[data-id="${key}"] .medium-editor-element`).innerHTML;
-      // this.log = text;
-      this.$root.updatePost(key, text);
+    opencreatePost() {
+      this.createPostClosed = false;
     },
-    openAddPost() {
-      this.addPostClosed = false;
-    },
-    closeAddPost() {
-      this.addPostClosed = true;
+    closecreatePost() {
+      this.createPostClosed = true;
     },
   },
   components: {
-    'medium-editor': editor,
     draggable: () => import('vuedraggable'),
   },
 };
@@ -155,5 +158,20 @@ a {
   background: #42b983;
   border-radius: 50%;
   display: inline-block;
+  position: relative;
+}
+#add-post::after{
+  content: 'add post';
+  text-transform: uppercase;
+  color: black;
+  font-size: 10px;
+  position: absolute;
+  bottom: 10px;
+  width: 70px;
+  display: none;
+  left: 25px;
+}
+#add-post:hover::after{
+  display: block;
 }
 </style>
