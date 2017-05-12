@@ -21,7 +21,8 @@
 import editor from 'vue2-medium-editor';
 import moment from 'moment';
 
-require('../assets/medium-editor-master/dist/css/medium-editor.min.css');
+import '../assets/medium-editor-master/dist/css/medium-editor.min.css';
+import '../assets/medium-editor-master/dist/css/themes/beagle.min.css';
 
 export default {
   name: 'post',

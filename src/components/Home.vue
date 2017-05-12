@@ -2,8 +2,9 @@
   <div class="hello">
 
     <!-- HERO -->
-    <section class="hero is-primary is-small">
+    <section class="hero is-primary is-medium is-bold">
       <div class="hero-body">
+        <vue-particles color="#dedede" :particlesNumber="80" hoverMode="grab"></vue-particles>
         <div class="container">
           <h1 class="title">
             Mikroblog
@@ -23,8 +24,8 @@
           <!-- posts -->
           <div class="column is-one-third-desktop is-half-tablet" v-for="post in posts">
             <div class="box" :data-id="post.id">
-              <button v-if="store.user.uid" class="delete is-small is-pulled-right" @click="$root.removePost(post)"></button>
-              <h2 class="title"><router-link :to="{name: 'Post', params: { id: post.id}}">{{post.title}}</router-link></h2>
+              <button v-if="store.user.uid" class="delete is-small is-pulled-right" @click="confirmDeletePost(post)"></button>
+              <h2 class="title"><router-link :to="{name: 'Post', params: {id: post.id}}">{{post.title}}</router-link></h2>
               <h3 class="subtitle">{{niceDate(post.id)}}</h3>
               <p v-html="truncate(post.body, 300, '…')"></p>
               <!-- <button type="button" name="button" @click="$root.updatePost(post)">Update</button> -->
@@ -97,6 +98,21 @@ export default {
     };
   },
   methods: {
+    confirmDeletePost(data) {
+      this.$dialog.confirm({
+        title: 'Deleting post',
+        message: 'Are you sure you want to <strong>delete</strong> your post? This action cannot be undone.',
+        confirmText: 'Delete Post',
+        type: 'is-danger',
+        hasIcon: true,
+        onConfirm: () => {
+          this.$toast.open({
+            message: 'Post deleted!',
+          });
+          this.$root.removePost(data);
+        },
+      });
+    },
     getPostId(post) {
       this.log = post;
     },
@@ -144,6 +160,16 @@ li {
 
 a {
   color: #42b983;
+}
+.hero-body {
+  position: relative;
+}
+#particles-js {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
 }
 .console {
   position: fixed;

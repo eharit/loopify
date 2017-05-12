@@ -5,6 +5,7 @@ import VueFire from 'vuefire';
 import firebase from 'firebase';
 import firebaseui from 'firebaseui';
 import Buefy from 'buefy';
+import VueParticles from 'vue-particles';
 import 'buefy/lib/buefy.css';
 
 import App from './App';
@@ -17,6 +18,7 @@ Vue.config.productionTip = false;
 
 Vue.use(VueFire);
 Vue.use(Buefy);
+Vue.use(VueParticles);
 
 const app = firebase.initializeApp(config);
 const db = app.database();
