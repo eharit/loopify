@@ -2,10 +2,8 @@
 
   <section class="section">
     <div class="container" data-id="post.id">
-      <div class="heading">
         <h1 class="title">{{post.title}}</h1>
         <h2 class="subtitle">{{niceDate}}</h2>
-      </div>
       <div id="medium-body">
         <medium-editor
         :text="post.body"
@@ -34,7 +32,7 @@ export default {
   },
   computed: {
     niceDate() {
-      return moment(Date(this.post.id)).calendar();
+      return moment(new Date(parseInt(this.post.id, 10))).calendar();
     },
   },
   methods: {
@@ -49,11 +47,23 @@ export default {
   },
 };
 </script>
-<style scoped>
+<style >
   p {
     margin-bottom: 10px;
   }
-  [contenteditable] {
+  [contenteditable]:hover {
+    border: 1px blue dashed;
     color: blue;
+    padding: 5px 5px 5px 15px;
+    margin: -6px -6px -6px -16px;
+  }
+  [contenteditable][data-medium-focused] {
+    border: 1px lightgray dashed;
+    color: black;
+    padding: 5px 5px 5px 15px;
+    margin: -6px -6px -6px -16px;
+  }
+  .medium-editor-element {
+    outline: none;
   }
 </style>

@@ -1,31 +1,37 @@
 <template>
   <div class="hello">
 
+    <!-- HERO -->
     <section class="hero is-primary is-small">
       <div class="hero-body">
         <div class="container">
           <h1 class="title">
-            Microblog
+            Mikroblog
           </h1>
           <h2 class="subtitle">
-            the tiniest blog all time
+            the tiniest blog ever
           </h2>
         </div>
       </div>
     </section>
 
+    <!-- CONTENT -->
     <section class="section">
       <div class="container">
         <div class="columns is-multiline">
+
+          <!-- posts -->
           <div class="column is-one-third-desktop is-half-tablet" v-for="post in posts">
             <div class="box" :data-id="post.id">
               <button v-if="store.user.uid" class="delete is-small is-pulled-right" @click="$root.removePost(post)"></button>
               <h2 class="title"><router-link :to="{name: 'Post', params: { id: post.id}}">{{post.title}}</router-link></h2>
               <h3 class="subtitle">{{niceDate(post.id)}}</h3>
-              <p v-html="truncate(post.body, 200, '…')"></p>
+              <p v-html="truncate(post.body, 300, '…')"></p>
               <!-- <button type="button" name="button" @click="$root.updatePost(post)">Update</button> -->
             </div>
           </div>
+
+          <!-- new post -->
           <div class="column is-one-third-desktop is-half-tablet" v-if="store.user.uid">
             <div class="title" v-if="createPostClosed">
               <a id="add-post" @click="opencreatePost">+</a>
@@ -46,7 +52,7 @@
               </b-field>
               <b-field>
                 <b-input
-                maxlength="200"
+                maxlength="300"
                 type="textarea"
                 v-model="newPost.body"
                 placeholder="Text">
@@ -54,7 +60,7 @@
               </b-field>
               <div class="field">
                 <p class="control">
-                  <button class="button is-success" type="button" name="submit" @click="createPost(newPost)">Add New Post</button>
+                  <button class="button is-primary" type="button" name="submit" @click="createPost(newPost)">Add New Post</button>
                 </p>
               </div>
             </div>
@@ -63,11 +69,12 @@
       </div>
     </section>
 
+    <!-- Firebase auth container -->
     <div id="firebaseui-auth-container" style="display: none;"></div>
 
-    <div class="console">
+    <!-- <div class="console">
       <pre>{{log}}</pre>
-    </div>
+    </div> -->
 
   </div>
 </template>
@@ -94,7 +101,7 @@ export default {
       this.log = post;
     },
     niceDate(id) {
-      return moment(Date(id)).calendar();
+      return moment(new Date(parseInt(id, 10))).calendar();
     },
     truncate(value, length, omission) {
       if (value.length <= length) return value;

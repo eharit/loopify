@@ -3,18 +3,16 @@
     <div class="container">
       <div class="nav-left">
         <router-link class="nav-item" to="/" >
-          <img src="http://bulma.io/images/bulma-logo.png" alt="Bulma logo">
+          <img src="../assets/logo.png" alt="Mikroblog">
         </router-link>
-        <router-link to="/" class="nav-item is-tab is-hidden-mobile">Home</router-link>
       </div>
-      <span class="nav-toggle">
+      <span class="nav-toggle" @click="toggleMenu">
         <span></span>
         <span></span>
         <span></span>
       </span>
-      <div class="nav-right nav-menu">
-        <router-link to="/" class="nav-item is-tab is-hidden-tablet">Home</router-link>
-        <router-link to="/login" class="nav-item is-tab is-hidden-tablet">Login</router-link>
+      <div class="nav-right nav-menu" :class="{ 'display-block': mobileMenuVisible }">
+        <router-link to="/" class="nav-item is-tab">Home</router-link>
         <a class="nav-item is-tab" v-if="$root.store.user.uid">
           <figure class="image is-16x16" style="margin-right: 8px;">
             <img :src="$root.store.user.photoURL" >
@@ -32,10 +30,30 @@ export default {
   name: 'Navbar',
   data: function data() {
     return {
-
+      mobileMenuVisible: false,
     };
+  },
+  methods: {
+    toggleMenu() {
+      this.mobileMenuVisible = !this.mobileMenuVisible;
+    },
+  },
+  mounted() {
+    window.addEventListener('click', (e) => {
+      if (!e.target.classList.contains('nav-toggle')) {
+        this.mobileMenuVisible = false;
+      }
+    }, false);
   },
 };
 </script>
 <style>
+  .display-block {
+    display: block !important;
+  }
+  @media screen and (min-width: 767px) {
+    .display-block {
+      display: none !important;
+    }
+  }
 </style>
