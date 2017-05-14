@@ -8,6 +8,12 @@
 # install dependencies
 npm install
 
+# create a firebase app
+https://console.firebase.google.com/
+
+# get your config details (Add Firebase to your web app) from the overview page and rename /src/helpers/firebase.config.sample.js to firebase config.js and replace config data respectively
+https://console.firebase.google.com/project/<your_project_id>/overview
+
 # serve with hot reload at localhost:8080
 npm run dev
 

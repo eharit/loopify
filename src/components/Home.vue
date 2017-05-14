@@ -12,7 +12,7 @@
           <h2 class="subtitle is-3">
             the tiniest blog ever
           </h2>
-          <button type="button" name="button" @click="$root.setPages">Set Pages</button>
+          <!-- <button type="button" name="button" class="button is-primary is-inverted is-outlined" @click="$root.setPages">Set Pages</button> -->
         </div>
       </div>
     </section>
