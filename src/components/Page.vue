@@ -1,6 +1,6 @@
 <template>
   <div>
-    <component :is="currentBlocks[index]" v-for="(block, index) in blocks">{{block.name}}</component>
+    <component :is="currentBlocks[index]" :content="block.content" v-for="(block, index) in blocks">{{block.name}}</component>
   </div>
 </template>
 <script>
@@ -10,9 +10,6 @@ export default {
   data: function data() {
     return {
       blocks: this.currentPage().blocks,
-      // currentBlocks: this.$root.pages
-      //   .find(e => e.route === this.$route.params.route).blocks
-      //   .map(e => () => import(`./blocks/${e.name}`)),
     };
   },
   methods: {

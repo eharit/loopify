@@ -25,7 +25,7 @@ Vue.use(vueLogger, { prefix: new Date(), dev: true });
 const app = firebase.initializeApp(config);
 const db = app.database();
 const postRef = db.ref('posts');
-// const pageRef = db.ref('pages');
+const pageRef = db.ref('pages');
 // const blockRef = db.ref('blocks');
 
 const store = {
@@ -42,15 +42,10 @@ new Vue({
     store,
     ui: new firebaseui.auth.AuthUI(firebase.auth()),
     loading: false,
-    pages: [
-      { id: '1', route: 'page1', title: 'Page 1', blocks: [{ name: 'block1' }, { name: 'block3' }, { name: 'block2' }] },
-      { id: '2', route: 'page2', title: 'Page 2', blocks: [{ name: 'block3' }, { name: 'block1' }, { name: 'block2' }] },
-      { id: '3', route: 'page3', title: 'Page 3', blocks: [{ name: 'block2' }, { name: 'block2' }, { name: 'block3' }] },
-    ],
   },
   firebase: {
     posts: postRef,
-    // pages: pageRef,
+    pages: pageRef,
   },
   methods: {
     createPost(post) {
@@ -73,6 +68,9 @@ new Vue({
       postRef.child(key).update({
         body: text,
       });
+    },
+    setPages() {
+      this.pages.forEach(e => pageRef.push(e));
     },
   },
   created() {

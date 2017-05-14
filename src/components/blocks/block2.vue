@@ -2,9 +2,9 @@
   <section class="section">
     <div class="container">
       <div class="heading">
-        <h1 class="title">Block 2</h1>
+        <h1 class="title">{{content.title}}</h1>
         <h2 class="subtitle">
-          A simple container to divide your page into <strong>sections</strong>, like the one you're currently reading
+          {{content.subtitle}}
         </h2>
       </div>
     </div>
@@ -18,6 +18,7 @@ export default {
 
     };
   },
+  props: ['content'],
 };
 </script>
 <style>
