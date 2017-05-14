@@ -9,11 +9,16 @@ export default {
   name: 'page',
   data: function data() {
     return {
-      blocks: this.$root.pages.find(e => e.route === this.$route.params.route).blocks,
+      blocks: this.currentPage().blocks,
       // currentBlocks: this.$root.pages
       //   .find(e => e.route === this.$route.params.route).blocks
       //   .map(e => () => import(`./blocks/${e.name}`)),
     };
+  },
+  methods: {
+    currentPage() {
+      return this.$root.pages.find(e => e.route === this.$route.params.route);
+    },
   },
   computed: {
     currentBlocks() {
@@ -22,7 +27,7 @@ export default {
   },
   watch: {
     $route() {
-      this.blocks = this.$root.pages.find(e => e.route === this.$route.params.route).blocks;
+      this.blocks = this.currentPage().blocks;
     },
   },
   updated() {
