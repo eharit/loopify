@@ -6,6 +6,7 @@ import firebase from 'firebase';
 import firebaseui from 'firebaseui';
 import Buefy from 'buefy';
 import VueParticles from 'vue-particles';
+import vueLogger from 'vue-logger';
 import 'buefy/lib/buefy.css';
 
 import App from './App';
@@ -19,10 +20,13 @@ Vue.config.productionTip = false;
 Vue.use(VueFire);
 Vue.use(Buefy);
 Vue.use(VueParticles);
+Vue.use(vueLogger, { prefix: new Date(), dev: true });
 
 const app = firebase.initializeApp(config);
 const db = app.database();
 const postRef = db.ref('posts');
+// const pageRef = db.ref('pages');
+// const blockRef = db.ref('blocks');
 
 const store = {
   user: {},
@@ -37,9 +41,16 @@ new Vue({
   data: {
     store,
     ui: new firebaseui.auth.AuthUI(firebase.auth()),
+    loading: false,
+    pages: [
+      { id: '1', route: 'page1', title: 'Page 1', blocks: [{ name: 'block1' }, { name: 'block3' }, { name: 'block2' }] },
+      { id: '2', route: 'page2', title: 'Page 2', blocks: [{ name: 'block3' }, { name: 'block1' }, { name: 'block2' }] },
+      { id: '3', route: 'page3', title: 'Page 3', blocks: [{ name: 'block2' }, { name: 'block2' }, { name: 'block3' }] },
+    ],
   },
   firebase: {
     posts: postRef,
+    // pages: pageRef,
   },
   methods: {
     createPost(post) {
@@ -52,6 +63,7 @@ new Vue({
     },
     logOut() {
       firebase.auth().signOut();
+      this.ui.reset();
     },
     removePost(data) {
       postRef.child(data['.key']).remove();

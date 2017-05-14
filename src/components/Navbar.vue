@@ -13,6 +13,7 @@
       </span>
       <div class="nav-right nav-menu" :class="{ 'display-block': mobileMenuVisible }">
         <router-link to="/" class="nav-item is-tab">Home</router-link>
+        <router-link v-for="page in pages" :to="`/${page.route}`" class="nav-item is-tab" :key="page.id">{{page.title}}</router-link>
         <a class="nav-item is-tab" v-if="$root.store.user.uid">
           <figure class="image is-16x16" style="margin-right: 8px;">
             <img :src="$root.store.user.photoURL" >
@@ -20,22 +21,50 @@
           Profile
         </a>
         <a v-if="$root.store.user.uid" class="nav-item is-tab" @click="$root.logOut">Log out</a>
-        <router-link v-else to="/login" class="nav-item is-tab">Login</router-link>
+        <a v-else class="nav-item is-tab" @click="showLogin">Login</a>
       </div>
     </div>
+
+    <div class="modal" :class="{ 'visible': loginVisible}">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Log in</p>
+          <button class="delete" @click="hideLogin"></button>
+        </header>
+        <section class="modal-card-body">
+          <auth></auth>
+        </section>
+        <footer class="modal-card-foot"></footer>
+      </div>
+    </div>
+
   </nav>
 </template>
 <script>
+import Auth from './Auth';
+
 export default {
   name: 'Navbar',
   data: function data() {
     return {
       mobileMenuVisible: false,
+      loginVisible: false,
+      pages: this.$root.pages,
     };
+  },
+  components: {
+    auth: Auth,
   },
   methods: {
     toggleMenu() {
       this.mobileMenuVisible = !this.mobileMenuVisible;
+    },
+    showLogin() {
+      this.loginVisible = true;
+    },
+    hideLogin() {
+      this.loginVisible = false;
     },
   },
   mounted() {
@@ -55,5 +84,11 @@ export default {
     .display-block {
       display: none !important;
     }
+  }
+  .visible {
+    display: block;
+  }
+  .modal-card {
+    margin-top: 50px;
   }
 </style>

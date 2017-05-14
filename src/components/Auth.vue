@@ -10,7 +10,11 @@ export default {
   mounted() {
     const ui = this.$root.ui;
     const uiConfig = {
-      signInSuccessUrl: '/login',
+      callbacks: {
+        signInSuccess() {
+          return true;
+        },
+      },
       signInOptions: [
         firebase.auth.GoogleAuthProvider.PROVIDER_ID,
         firebase.auth.EmailAuthProvider.PROVIDER_ID,

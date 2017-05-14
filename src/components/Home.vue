@@ -6,10 +6,10 @@
       <div class="hero-body">
         <vue-particles color="#dedede" :particlesNumber="80" hoverMode="grab"></vue-particles>
         <div class="container">
-          <h1 class="title">
+          <h1 class="title is-1">
             Mikroblog
           </h1>
-          <h2 class="subtitle">
+          <h2 class="subtitle is-3">
             the tiniest blog ever
           </h2>
         </div>
@@ -19,18 +19,18 @@
     <!-- CONTENT -->
     <section class="section">
       <div class="container">
-        <div class="columns is-multiline">
+        <draggable v-model="posts" class="columns is-multiline">
 
           <!-- posts -->
-          <div class="column is-one-third-desktop is-half-tablet" v-for="post in posts">
-            <div class="box" :data-id="post.id">
-              <button v-if="store.user.uid" class="delete is-small is-pulled-right" @click="confirmDeletePost(post)"></button>
-              <h2 class="title"><router-link :to="{name: 'Post', params: {id: post.id}}">{{post.title}}</router-link></h2>
-              <h3 class="subtitle">{{niceDate(post.id)}}</h3>
-              <p v-html="truncate(post.body, 300, '…')"></p>
-              <!-- <button type="button" name="button" @click="$root.updatePost(post)">Update</button> -->
+            <div class="column is-one-third-desktop is-half-tablet" v-for="post in posts">
+              <div class="box" :data-id="post.id">
+                <button v-if="store.user.uid" class="delete is-small is-pulled-right" @click="confirmDeletePost(post)"></button>
+                <h2 class="title"><router-link :to="{name: 'Post', params: {id: post.id}}">{{post.title}}</router-link></h2>
+                <h3 class="subtitle">{{niceDate(post.id)}}</h3>
+                <p v-html="truncate(post.body, 300, '…')"></p>
+                <!-- <button type="button" name="button" @click="$root.updatePost(post)">Update</button> -->
+              </div>
             </div>
-          </div>
 
           <!-- new post -->
           <div class="column is-one-third-desktop is-half-tablet" v-if="store.user.uid">
@@ -66,12 +66,13 @@
               </div>
             </div>
           </div>
-        </div>
+
+        </draggable>
       </div>
     </section>
 
     <!-- Firebase auth container -->
-    <div id="firebaseui-auth-container" style="display: none;"></div>
+    <!-- <div id="firebaseui-auth-container" style="display: none;"></div> -->
 
     <!-- <div class="console">
       <pre>{{log}}</pre>
