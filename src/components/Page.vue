@@ -1,13 +1,18 @@
 <template>
-  <div>
-    <component :is="currentBlocks[index]" :content="block.content" v-for="(block, index) in blocks">{{block.name}}</component>
-  </div>
+  <draggable v-model="blocks"
+    @end="$root.updateBlockOrder(currentPage(), blocks)"
+    :options="{ handle: '.mu-handle' }">
+    <component :is="blockComponents[index]"
+    :page="currentPage()"
+    :block="block"
+    v-for="(block, index) in blocks">
+    :key="block.id"</component>
+  </draggable>
 </template>
 <script>
-
 export default {
   name: 'page',
-  data: function data() {
+  data() {
     return {
       blocks: this.currentPage().blocks,
     };
@@ -18,7 +23,7 @@ export default {
     },
   },
   computed: {
-    currentBlocks() {
+    blockComponents() {
       return this.blocks.map(e => () => import(`./blocks/${e.name}`));
     },
   },
@@ -27,10 +32,23 @@ export default {
       this.blocks = this.currentPage().blocks;
     },
   },
-  updated() {
-    this.$log.log(this.currentBlocks);
+  components: {
+    draggable: () => import('vuedraggable'),
   },
 };
 </script>
 <style>
+ .mu-handle {
+   position: absolute;
+   display: block;
+   top: 20px;
+   left: 20px;
+ }
+ .mu-handle-container {
+   position: relative;
+   cursor: grab;
+ }
+ .sortable-chosen .mu-handle {
+   cursor: grabbing;
+ }
 </style>

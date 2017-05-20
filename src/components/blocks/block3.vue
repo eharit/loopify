@@ -1,5 +1,6 @@
 <template>
-  <footer class="footer">
+  <footer class="footer mu-handle-container">
+    <i class="material-icons mu-handle">drag_handle</i>
     <div class="container">
       <div class="content has-text-centered">
         <p>

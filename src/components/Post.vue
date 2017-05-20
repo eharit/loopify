@@ -21,12 +21,9 @@
 import editor from 'vue2-medium-editor';
 import moment from 'moment';
 
-import '../assets/medium-editor-master/dist/css/medium-editor.min.css';
-import '../assets/medium-editor-master/dist/css/themes/beagle.min.css';
-
 export default {
   name: 'post',
-  data: function data() {
+  data() {
     return {
       post: this.$root.posts.find(e => e.id === this.$route.params.id),
     };

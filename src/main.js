@@ -48,6 +48,9 @@ new Vue({
     pages: pageRef,
   },
   methods: {
+    updateBlockOrder(currentPage, blocks) {
+      pageRef.child(currentPage['.key']).child('blocks').set(blocks);
+    },
     createPost(post) {
       const newPost = {
         id: JSON.stringify(new Date().getTime()),
@@ -68,6 +71,9 @@ new Vue({
       postRef.child(key).update({
         body: text,
       });
+    },
+    updatePage(key, data) {
+      this.$log.log(key, data);
     },
     setPages() {
       this.pages.forEach(e => pageRef.push(e));

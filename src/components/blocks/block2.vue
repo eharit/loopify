@@ -1,6 +1,7 @@
 <template>
-  <section class="section">
-    <div class="container">
+  <section class="section mu-handle-container">
+    <i class="material-icons mu-handle">drag_handle</i>
+    <div class="container mu-handle-container">
       <div class="heading">
         <h1 class="title">{{content.title}}</h1>
         <h2 class="subtitle">

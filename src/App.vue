@@ -11,6 +11,9 @@
 <script>
 import Navbar from './components/Navbar';
 
+import './assets/medium-editor-master/dist/css/medium-editor.min.css';
+import './assets/medium-editor-master/dist/css/themes/beagle.min.css';
+
 export default {
   name: 'app',
   components: {
