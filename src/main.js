@@ -5,7 +5,7 @@ import VueFire from 'vuefire';
 import firebase from 'firebase';
 import firebaseui from 'firebaseui';
 import Buefy from 'buefy';
-import VueParticles from 'vue-particles';
+// import VueParticles from 'vue-particles';
 import vueLogger from 'vue-logger';
 import 'buefy/lib/buefy.css';
 
@@ -19,18 +19,14 @@ Vue.config.productionTip = false;
 
 Vue.use(VueFire);
 Vue.use(Buefy);
-Vue.use(VueParticles);
+// Vue.use(VueParticles);
 Vue.use(vueLogger, { prefix: new Date(), dev: true });
 
 const app = firebase.initializeApp(config);
 const db = app.database();
-const postRef = db.ref('posts');
 const pageRef = db.ref('pages');
-// const blockRef = db.ref('blocks');
-
-const store = {
-  user: {},
-};
+const blockRef = db.ref('blocks');
+const contentRef = db.ref('content');
 
 /* eslint-disable no-new */
 new Vue({
@@ -39,54 +35,56 @@ new Vue({
   template: '<App/>',
   components: { App },
   data: {
-    store,
+    user: {},
     ui: new firebaseui.auth.AuthUI(firebase.auth()),
     loading: false,
   },
   firebase: {
-    posts: postRef,
     pages: pageRef,
+    blocks: blockRef,
+    content: contentRef,
   },
   methods: {
     updateBlockOrder(currentPage, blocks) {
       pageRef.child(currentPage['.key']).child('blocks').set(blocks);
     },
-    createPost(post) {
-      const newPost = {
+    createPage(page) {
+      const newPage = {
         id: JSON.stringify(new Date().getTime()),
-        body: post.body,
-        title: post.title,
+        body: page.body,
+        title: page.title,
       };
-      postRef.push(newPost);
+      pageRef.push(newPage);
+    },
+    removePage(data) {
+      pageRef.child(data['.key']).remove();
+      Vue.delete(data, '.key');
+    },
+    updatePage(key, text) {
+      pageRef.child(key).update({
+        value: text,
+      });
     },
     logOut() {
       firebase.auth().signOut();
       this.ui.reset();
     },
-    removePost(data) {
-      postRef.child(data['.key']).remove();
-      Vue.delete(data, '.key');
-    },
-    updatePost(key, text) {
-      postRef.child(key).update({
-        body: text,
-      });
-    },
-    updatePage(key, data) {
-      this.$log.log(key, data);
-    },
-    setPages() {
-      this.pages.forEach(e => pageRef.push(e));
+    setData() {
+      const pages = this.pages;
+      // const blocks = this.blocks;
+      // const content = this.content;
+      pages.forEach(e => pageRef.child(e['.key']).child('queries').push({ content: 'xxx', block: 'xxx' }));
+      // contents.forEach(e => contentRef.push(e));
     },
   },
   created() {
     // firebase.initializeApp(config);
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        this.store.user = user;
+        this.user = user;
         this.$router.push('/');
       } else {
-        this.store.user = {};
+        this.user = {};
       }
     });
   },

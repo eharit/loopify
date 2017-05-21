@@ -10,7 +10,7 @@
         @edit="applyTextEdit(post)"
         :options=" {
           toolbar: true,
-          disableEditing: !$root.store.user.uid
+          disableEditing: !$root.user.uid
         }"></medium-editor>
       </div>
     </div>

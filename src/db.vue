@@ -6,11 +6,16 @@
 <script>
 export default {
   name: "db",
+  methods: {
+    pushData() {
+      // push data to server
+    },
+  },
   data() {
     return {
       db: {
-        routes: {
-          _route1: {
+        pages: {
+          _page1: {
             routeName: String,
             title: String,
             index: Number,
@@ -27,7 +32,7 @@ export default {
               _option2: String,
             },
           },
-          _route2: {
+          _page2: {
             routeName: String,
             title: String,
             index: Number,

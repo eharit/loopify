@@ -5,11 +5,8 @@
       <div class="container">
         <medium-editor class="title is-1" custom-tag="h1"
           :text='title'
-          @editableBlur="applyTextEdit(block)">
+          @edit="applyTextEdit(content, title, 'title')">
         </medium-editor>
-        <h2 class="subtitle is-3">
-          {{subtitle}}
-        </h2>
       </div>
     </div>
   </section>
@@ -21,18 +18,18 @@ export default {
   name: 'Page1',
   data() {
     return {
-      title: this.block.content.title,
-      subtitle: this.block.content.subtitle,
+      title: this.content.title,
       pageKey: this.page['.key'],
     };
   },
-  props: ['page', 'block'],
+  props: ['page', 'content'],
   components: {
     'medium-editor': editor,
   },
   methods: {
     applyTextEdit(block) {
-      this.$root.updatePage(this.pageKey, block);
+      this.$log.log('hero.vue', this.content);
+      // this.$root.updatePage(nodeKey, text);
     },
   },
 };

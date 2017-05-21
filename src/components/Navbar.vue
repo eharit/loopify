@@ -13,14 +13,14 @@
       </span>
       <div class="nav-right nav-menu" :class="{ 'display-block': mobileMenuVisible }">
         <router-link to="/" class="nav-item is-tab">Home</router-link>
-        <router-link v-for="page in pages" :to="`/${page.route}`" class="nav-item is-tab" :key="page.id">{{page.title}}</router-link>
-        <a class="nav-item is-tab" v-if="$root.store.user.uid">
+        <router-link v-for="page in pages" :to="`/${page.routeName}`" class="nav-item is-tab" :key="page.id">{{page.title}}</router-link>
+        <a class="nav-item is-tab" v-if="$root.user.uid">
           <figure class="image is-16x16" style="margin-right: 8px;">
-            <img :src="$root.store.user.photoURL" >
+            <img :src="$root.user.photoURL" >
           </figure>
           Profile
         </a>
-        <a v-if="$root.store.user.uid" class="nav-item is-tab" @click="$root.logOut">Log out</a>
+        <a v-if="$root.user.uid" class="nav-item is-tab" @click="$root.logOut">Log out</a>
         <a v-else class="nav-item is-tab" @click="showLogin">Login</a>
       </div>
     </div>

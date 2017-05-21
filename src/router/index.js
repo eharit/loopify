@@ -2,8 +2,9 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Home from '@/components/Home';
 import Auth from '@/components/Auth';
-import Post from '@/components/Post';
 import Page from '@/components/Page';
+import Pages from '@/components/admin/Pages';
+
 
 Vue.use(Router);
 
@@ -21,14 +22,14 @@ export default new Router({
       component: Auth,
     },
     {
-      path: '/post/:id',
-      name: 'Post',
-      component: Post,
-    },
-    {
       path: '/:route',
       name: 'Page',
       component: Page,
+    },
+    {
+      path: '/admin/pages',
+      name: 'Pages',
+      component: Pages,
     },
   ],
 });

@@ -4,9 +4,9 @@
     :options="{ handle: '.mu-handle' }">
     <component :is="blockComponents[index]"
     :page="currentPage()"
-    :block="block"
-    v-for="(block, index) in blocks">
-    :key="block.id"</component>
+    :content="content"
+    v-for="(content, index) in blockContent"
+    :key="content['.key']"></component>
   </draggable>
 </template>
 <script>
@@ -14,26 +14,42 @@ export default {
   name: 'page',
   data() {
     return {
-      blocks: this.currentPage().blocks,
+      queries: this.currentPage().queries,
+      blocks: this.$root.blocks,
+      content: this.$root.content,
     };
   },
   methods: {
     currentPage() {
-      return this.$root.pages.find(e => e.route === this.$route.params.route);
+      return this.$root.pages.find(e => e.routeName === this.$route.params.route);
     },
   },
   computed: {
     blockComponents() {
-      return this.blocks.map(e => () => import(`./blocks/${e.name}`));
+      const componentNames = Object.keys(this.queries).map(key => this.blocks.find(e => e['.key'] === this.queries[key].block)['.value']);
+      return componentNames.map(e => () => import(`./blocks/${e}`));
+    },
+    blockContent() {
+      const content = [];
+      // const componentIds = Object.keys(this.queries)
+      //   .map(key => this.blocks.find(e => e['.key'] === this.queries[key].block)['.key']);
+      const contentIds = Object.keys(this.queries)
+        .map(key => this.content.find(e => e['.key'] === this.queries[key].content)['.key']);
+      contentIds.forEach(id => content.push(this.content.find(e => e['.key'] === id)));
+      // .map(key => this.blocks.find(e => e.block === id))));
+      return content;
     },
   },
   watch: {
     $route() {
-      this.blocks = this.currentPage().blocks;
+      this.queries = this.currentPage().queries;
     },
   },
   components: {
     draggable: () => import('vuedraggable'),
+  },
+  mounted() {
+    this.$log.log('Page.vue', this.blockContent);
   },
 };
 </script>
