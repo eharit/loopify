@@ -1,6 +1,6 @@
 <template>
-  <draggable v-model="blocks"
-    @end="$root.updateBlockOrder(currentPage(), blocks)"
+  <draggable v-model="contentMeta"
+    @end="$root.updateBlockOrder(currentPage(), contentMeta)"
     :options="{ handle: '.mu-handle' }">
     <component :is="blockComponents[index]"
     :page="currentPage()"
@@ -14,7 +14,7 @@ export default {
   name: 'page',
   data() {
     return {
-      queries: this.currentPage().queries,
+      contentMeta: this.currentPage().contentMeta,
       blocks: this.$root.blocks,
       content: this.$root.content,
     };
@@ -26,30 +26,26 @@ export default {
   },
   computed: {
     blockComponents() {
-      const componentNames = Object.keys(this.queries).map(key => this.blocks.find(e => e['.key'] === this.queries[key].block)['.value']);
-      return componentNames.map(e => () => import(`./blocks/${e}`));
+      const blockIds = this.contentMeta.map(obj => obj.block);
+      const blocks = blockIds.map(id => this.blocks.find(obj => obj['.key'] === id)['.value']);
+      return blocks.map(e => () => import(`./blocks/${e}`));
     },
     blockContent() {
-      const content = [];
-      // const componentIds = Object.keys(this.queries)
-      //   .map(key => this.blocks.find(e => e['.key'] === this.queries[key].block)['.key']);
-      const contentIds = Object.keys(this.queries)
-        .map(key => this.content.find(e => e['.key'] === this.queries[key].content)['.key']);
-      contentIds.forEach(id => content.push(this.content.find(e => e['.key'] === id)));
-      // .map(key => this.blocks.find(e => e.block === id))));
+      const contentIds = this.contentMeta.map(obj => obj.content);
+      const content = contentIds.map(id => this.content.find(obj => obj['.key'] === id));
       return content;
     },
   },
   watch: {
     $route() {
-      this.queries = this.currentPage().queries;
+      this.contentMeta = this.currentPage().contentMeta;
     },
   },
   components: {
     draggable: () => import('vuedraggable'),
   },
   mounted() {
-    this.$log.log('Page.vue', this.blockContent);
+    // this.$log.log('Page.vue', this.blockContent);
   },
 };
 </script>

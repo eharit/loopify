@@ -1,15 +1,19 @@
 <template>
-  <section class="section">
-    <div class="container mu-handle-container">
-      <i class="material-icons mu-handle">&#xE25D;</i>
-      <medium-editor class="title is-1" custom-tag="h1"
-        :text='title'
-        @edit="applyTextEdit(content, title, 'title')">
-      </medium-editor>
-      <medium-editor class="content" custom-tag="div"
-        :text="body"
-        @edit="applyTextEdit(content, body, 'body')">
-      </medium-editor>
+  <section class="section mu-handle-container">
+    <i class="material-icons mu-handle">&#xE25D;</i>
+    <div class="container">
+      <div class="title is-2" :data-content-id="`${content['.key']}-title`">
+        <medium-editor custom-tag="h2"
+          :text="title"
+          @edit="applyTextEdit(content, 'title')">
+        </medium-editor>
+      </div>
+      <div class="content" :data-content-id="`${content['.key']}-body`">
+        <medium-editor
+          :text="body"
+          @edit="applyTextEdit(content, 'body')">
+        </medium-editor>
+      </div>
     </div>
   </section>
 </template>
@@ -20,8 +24,8 @@ export default {
   name: 'Page1',
   data() {
     return {
-      title: this.content.title,
-      body: this.content.body,
+      title: this.content.title.value,
+      body: this.content.body.value,
       pageKey: this.page['.key'],
     };
   },
@@ -30,10 +34,13 @@ export default {
     'medium-editor': editor,
   },
   methods: {
-    applyTextEdit(block) {
-      this.$log.log('titleBody.vue', this.content);
-      // this.$root.updatePage(nodeKey, text);
+    applyTextEdit(content, textKey) {
+      const text = document.querySelector(`[data-content-id="${content['.key']}-${textKey}"] .medium-editor-element`).innerHTML;
+      this.$root.updateContent(content, textKey, text);
     },
+  },
+  mounted() {
+    // this.$log.log(this.title, this.body);
   },
 };
 </script>

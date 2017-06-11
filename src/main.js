@@ -45,8 +45,11 @@ new Vue({
     content: contentRef,
   },
   methods: {
-    updateBlockOrder(currentPage, blocks) {
-      pageRef.child(currentPage['.key']).child('blocks').set(blocks);
+    updateBlockOrder(currentPage, contentMeta) {
+      // this.$log.log(currentPage, contentMeta);
+      if (currentPage && contentMeta) {
+        pageRef.child(currentPage['.key']).child('contentMeta').set(contentMeta);
+      }
     },
     createPage(page) {
       const newPage = {
@@ -60,8 +63,9 @@ new Vue({
       pageRef.child(data['.key']).remove();
       Vue.delete(data, '.key');
     },
-    updatePage(key, text) {
-      pageRef.child(key).update({
+    updateContent(content, textKey, text) {
+      // this.$log.log(content['.key'], textKey, text);
+      contentRef.child(content['.key']).child(textKey).update({
         value: text,
       });
     },
@@ -73,7 +77,7 @@ new Vue({
       const pages = this.pages;
       // const blocks = this.blocks;
       // const content = this.content;
-      pages.forEach(e => pageRef.child(e['.key']).child('queries').push({ content: 'xxx', block: 'xxx' }));
+      pages.forEach(e => pageRef.child(e['.key']).child('contentMeta').set([{ block: 'xxx', content: 'xxx' }, { block: 'xxx', content: 'xxx' }]));
       // contents.forEach(e => contentRef.push(e));
     },
   },

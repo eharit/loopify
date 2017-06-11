@@ -13,7 +13,7 @@ export default {
     };
   },
   mounted() {
-    this.$log.log(this);
+    // this.$log.log(this);
   },
 };
 </script>
