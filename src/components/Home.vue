@@ -6,7 +6,6 @@
       <pre>{{content}}</pre>
       <pre>{{pages}}</pre>
     </div>
-    <button type="button" name="button" @click="$root.setData">Set Data</button>
   </div>
 </template>
 <script>
