@@ -59,7 +59,7 @@ new Vue({
         index: this.pages.length,
         contentMeta: [],
       };
-      contentRef.push({ body: 'Text', title: 'Title' }).then((snapshot) => {
+      contentRef.push({ body: { value: '' }, title: { value: '' } }).then((snapshot) => {
         newPage.contentMeta = [{ block: '-Kkbgem08HsqkeJqamaO', content: snapshot.key }];
         self.$log.log(newPage);
         pageRef.push(newPage).then(() => {

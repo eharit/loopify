@@ -46,7 +46,7 @@ export default {
       log: '',
       createPageClosed: true,
       user: this.$root.user,
-      initialProgress: 33,
+      initialProgress: 15,
     };
   },
   methods: {
@@ -67,17 +67,20 @@ export default {
   },
   computed: {
     progress() {
-      let prog = this.initialProgress;
-      if (this.newPage.title !== '') {
-        prog = 100;
+      let progr = this.initialProgress;
+      if (this.newPage.title.length > 3) {
+        progr = 100;
       }
-      return prog;
+      return progr;
     },
   },
 };
 </script>
 <style>
-  .is-animated {
-    transition: .25s;
+  progress[value]::-webkit-progress-value{
+    -webkit-transition : width 1s ease;
+    -moz-transition : width 1s ease;
+    -o-transition : width 1s ease;
+    transition : width 1s ease;
   }
 </style>
