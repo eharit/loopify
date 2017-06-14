@@ -48,7 +48,13 @@ new Vue({
     updateBlockOrder(currentPage, contentMeta) {
       // this.$log.log(currentPage, contentMeta);
       if (currentPage && contentMeta) {
-        pageRef.child(currentPage['.key']).child('contentMeta').set(contentMeta);
+        pageRef.child(currentPage['.key']).child('contentMeta').set(contentMeta)
+        .then(() => {
+          this.success('Block order changed');
+        })
+        .then(() => {
+          this.danger('Block order has not changed');
+        });
       }
     },
     createPage(page) {
@@ -59,20 +65,25 @@ new Vue({
         index: this.pages.length,
         contentMeta: [],
       };
-      contentRef.push({ body: { value: '' }, title: { value: '' } }).then((snapshot) => {
+      contentRef.push({ body: { value: '' }, title: { value: '' } })
+      .then((snapshot) => {
         newPage.contentMeta = [{ block: '-Kkbgem08HsqkeJqamaO', content: snapshot.key }];
         self.$log.log(newPage);
         pageRef.push(newPage).then(() => {
           this.$router.push(`${newPage.routeName}`);
+          this.success('Page have been created successfully');
         });
       });
 
       // pageRef.push(newPage);
     },
     removePage(data) {
-      pageRef.child(data['.key']).remove();
-      Vue.delete(data, '.key');
-      this.$router.push('/');
+      pageRef.child(data['.key']).remove()
+      .then(() => {
+        Vue.delete(data, '.key');
+        this.$router.push('/');
+        this.success('Page deleted successfully');
+      });
     },
     updateContent(content, textKey, text) {
       // this.$log.log(content['.key'], textKey, text);
@@ -81,7 +92,10 @@ new Vue({
       });
     },
     logOut() {
-      firebase.auth().signOut();
+      firebase.auth().signOut()
+      .then(() => {
+        this.toast('Logout successful');
+      });
       this.ui.reset();
     },
     setData() {
@@ -90,6 +104,21 @@ new Vue({
       // const content = this.content;
       pages.forEach(e => pageRef.child(e['.key']).child('contentMeta').set([{ block: 'xxx', content: 'xxx' }, { block: 'xxx', content: 'xxx' }]));
       // contents.forEach(e => contentRef.push(e));
+    },
+    toast(message) {
+      this.$toast.open(message);
+    },
+    success(message) {
+      this.$toast.open({
+        message,
+        type: 'is-success',
+      });
+    },
+    danger(message) {
+      this.$toast.open({
+        message,
+        type: 'is-danger',
+      });
     },
   },
   created() {

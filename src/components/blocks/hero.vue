@@ -29,8 +29,11 @@ export default {
   },
   methods: {
     applyTextEdit(content, textKey) {
-      const text = document.querySelector(`[data-content-id="${content['.key']}-${textKey}"] .medium-editor-element`).innerHTML;
-      this.$root.updateContent(content, textKey, text);
+      const editorElement = document.querySelector(`[data-content-id="${content['.key']}-${textKey}"] .medium-editor-element`);
+      if (editorElement) {
+        const text = editorElement.innerHTML;
+        this.$root.updateContent(content, textKey, text);
+      }
     },
   },
 };

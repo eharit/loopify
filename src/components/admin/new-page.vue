@@ -77,7 +77,7 @@ export default {
 };
 </script>
 <style>
-  progress[value]::-webkit-progress-value{
+  progress[value]::-webkit-progress-value {
     -webkit-transition : width 1s ease;
     -moz-transition : width 1s ease;
     -o-transition : width 1s ease;

@@ -53,9 +53,6 @@ export default {
         type: 'is-danger',
         hasIcon: true,
         onConfirm: () => {
-          this.$toast.open({
-            message: 'Page deleted!',
-          });
           this.$root.removePage(data);
         },
       });
