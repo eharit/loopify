@@ -52,16 +52,27 @@ new Vue({
       }
     },
     createPage(page) {
+      const self = this;
       const newPage = {
-        id: JSON.stringify(new Date().getTime()),
-        body: page.body,
+        routeName: page.title.toLowerCase(),
         title: page.title,
+        index: this.pages.length,
+        contentMeta: [],
       };
-      pageRef.push(newPage);
+      contentRef.push({ body: 'Text', title: 'Title' }).then((snapshot) => {
+        newPage.contentMeta = [{ block: '-Kkbgem08HsqkeJqamaO', content: snapshot.key }];
+        self.$log.log(newPage);
+        pageRef.push(newPage).then(() => {
+          this.$router.push(`${newPage.routeName}`);
+        });
+      });
+
+      // pageRef.push(newPage);
     },
     removePage(data) {
       pageRef.child(data['.key']).remove();
       Vue.delete(data, '.key');
+      this.$router.push('/');
     },
     updateContent(content, textKey, text) {
       // this.$log.log(content['.key'], textKey, text);

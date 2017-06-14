@@ -81,6 +81,7 @@ export default {
       },
       log: '',
       createPageClosed: true,
+      user: this.$root.user,
     };
   },
   methods: {
