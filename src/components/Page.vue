@@ -4,11 +4,21 @@
       <div class="hero-body">
         <div class="container">
           <h3 class="title">
-            Hi {{user.displayName}}
+            Hi {{blockToAdd}}
           </h3>
           <div class="level">
             <div class="leve-left">
               <new-page class=""></new-page>
+              <b-dropdown v-model="blockToAdd">
+                <button class="button is-primary" slot="trigger">
+                    <span>Add Block</span>
+                    <b-icon icon="arrow_drop_down"></b-icon>
+                </button>
+                <b-dropdown-option subheader>
+                    Add a block to the page
+                </b-dropdown-option>
+                <b-dropdown-option :value="block['.key']" v-for="block in blocks">{{block['.value']}}</b-dropdown-option>
+            </b-dropdown>
             </div>
             <div class="level-right">
               <a class="button is-danger is-outlined" @click="confirmDeletePage(currentPage())">
@@ -42,9 +52,13 @@ export default {
       blocks: this.$root.blocks,
       content: this.$root.content,
       user: this.$root.user,
+      blockToAdd: '',
     };
   },
   methods: {
+    addBlockToPage(blockKey, currentPage) {
+      this.$root.addBlockToPage(blockKey, currentPage);
+    },
     confirmDeletePage(data) {
       this.$dialog.confirm({
         title: 'Deleting page',
@@ -86,6 +100,9 @@ export default {
     $route() {
       this.contentMeta = this.currentPage().contentMeta;
     },
+    blockToAdd() {
+      this.addBlockToPage(this.blockToAdd, this.currentPage());
+    },
   },
   components: {
     draggable: () => import('vuedraggable'),
@@ -109,5 +126,8 @@ export default {
  }
  .sortable-chosen .mu-handle {
    cursor: grabbing;
+ }
+ .dropdown .box .option {
+   color: #454545;
  }
 </style>

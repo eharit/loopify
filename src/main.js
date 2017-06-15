@@ -45,6 +45,18 @@ new Vue({
     content: contentRef,
   },
   methods: {
+    addBlockToPage(blockKey, currentPage) {
+      const contentMeta = currentPage.contentMeta;
+      this.$log.log(blockKey, currentPage['.key']);
+      contentRef.push({ body: { value: '' }, title: { value: '' } })
+      .then((snapshot) => {
+        const newContentMeta = contentMeta.push({ block: blockKey, content: snapshot.key });
+        pageRef.child(currentPage['.key']).child('contentMeta').set(newContentMeta)
+        .then(() => {
+          this.success('Block successfully added to page');
+        });
+      });
+    },
     updateBlockOrder(currentPage, contentMeta) {
       // this.$log.log(currentPage, contentMeta);
       if (currentPage && contentMeta) {
