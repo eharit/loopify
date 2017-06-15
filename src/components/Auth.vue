@@ -12,7 +12,6 @@ export default {
     const uiConfig = {
       callbacks: {
         signInSuccess() {
-          this.success('Login successful');
           return true;
         },
       },

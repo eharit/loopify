@@ -22,14 +22,14 @@ export default new Router({
       component: Auth,
     },
     {
-      path: '/:route',
-      name: 'Page',
-      component: Page,
-    },
-    {
       path: '/admin/pages',
       name: 'Pages',
       component: Pages,
+    },
+    {
+      path: '/:route',
+      name: 'Page',
+      component: Page,
     },
   ],
 });

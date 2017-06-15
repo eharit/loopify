@@ -21,11 +21,11 @@
           Profile
         </a>
         <a v-if="$root.user.uid" class="nav-item is-tab" @click="$root.logOut">Log out</a>
-        <a v-else class="nav-item is-tab" @click="showLogin">Login</a>
+        <router-link v-else to="/login" class="nav-item is-tab">Login</router-link>
       </div>
     </div>
 
-    <div class="modal" :class="{ 'visible': loginVisible}">
+    <!-- <div class="modal" :class="{ 'visible': loginVisible}">
       <div class="modal-background"></div>
       <div class="modal-card">
         <header class="modal-card-head">
@@ -37,12 +37,12 @@
         </section>
         <footer class="modal-card-foot"></footer>
       </div>
-    </div>
+    </div> -->
 
   </nav>
 </template>
 <script>
-import Auth from './Auth';
+// import Auth from './Auth';
 
 export default {
   name: 'Navbar',
@@ -53,9 +53,9 @@ export default {
       pages: this.$root.pages,
     };
   },
-  components: {
-    auth: Auth,
-  },
+  // components: {
+  //   auth: Auth,
+  // },
   methods: {
     toggleMenu() {
       this.mobileMenuVisible = !this.mobileMenuVisible;
