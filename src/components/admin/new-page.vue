@@ -2,7 +2,7 @@
   <div id="new-page">
     <!-- new page -->
       <div class="title" v-if="createPageClosed">
-        <a class="button is-success" @click="opencreatePage">
+        <a class="button is-primary" @click="opencreatePage">
           <span class="icon is-small">
             <i class="material-icons">add</i>
           </span>

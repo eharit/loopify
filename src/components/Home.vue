@@ -3,9 +3,6 @@
     <div class="container">
       <h1 class="title is-1">Hello</h1>
       <new-page></new-page>
-      <pre>{{blocks}}</pre>
-      <pre>{{content}}</pre>
-      <pre>{{pages}}</pre>
     </div>
   </div>
 </template>

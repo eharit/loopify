@@ -1,5 +1,6 @@
 <template>
-  <section class="hero is-medium is-info is-bold">
+  <section class="hero is-medium is-warning is-bold">
+    <button v-if="$root.user.uid" class="delete is-small is-pulled-right" @click="deleteBlock"></button>
     <div class="hero-body mu-handle-container">
       <i class="material-icons mu-handle">&#xE25D;</i>
       <div class="container title is-1" :data-content-id="`${content['.key']}-title`">
@@ -34,6 +35,9 @@ export default {
         const text = editorElement.innerHTML;
         this.$root.updateContent(content, textKey, text);
       }
+    },
+    deleteBlock() {
+      this.$emit('deleteBlock');
     },
   },
 };

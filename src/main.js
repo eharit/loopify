@@ -50,8 +50,8 @@ new Vue({
       this.$log.log(blockKey, currentPage['.key']);
       contentRef.push({ body: { value: '' }, title: { value: '' } })
       .then((snapshot) => {
-        const newContentMeta = contentMeta.push({ block: blockKey, content: snapshot.key });
-        pageRef.child(currentPage['.key']).child('contentMeta').set(newContentMeta)
+        contentMeta.unshift({ block: blockKey, content: snapshot.key });
+        pageRef.child(currentPage['.key']).child('contentMeta').set(contentMeta)
         .then(() => {
           this.success('Block successfully added to page');
         });
