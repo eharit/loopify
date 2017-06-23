@@ -1,5 +1,5 @@
 <template>
-  <section class="hero is-medium is-warning is-bold">
+  <section class="hero is-medium is-primary is-bold">
     <div class="hero-body mu-container">
       <i v-if="$root.user.uid"  class="material-icons mu-handle mu-object">&#xE25D;</i>
       <i v-if="$root.user.uid" class="material-icons mu-clear mu-object" @click="deleteBlock">cancel</i>

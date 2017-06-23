@@ -59,9 +59,18 @@ export default {
   },
   methods: {
     confirmDeleteBlock(contentKey) {
-      const contentIndex = this.contentMeta.map(e => e.content).indexOf(contentKey);
-      this.contentMeta.splice(contentIndex, 1);
-      this.$root.updateBlockOrder(this.currentPage(), this.currentPage().contentMeta);
+      this.$dialog.confirm({
+        title: 'Deleting block',
+        message: 'Are you sure you want to <strong>delete</strong> this block? This action cannot be undone.',
+        confirmText: 'Delete Block',
+        type: 'is-danger',
+        hasIcon: true,
+        onConfirm: () => {
+          const contentIndex = this.contentMeta.map(e => e.content).indexOf(contentKey);
+          this.contentMeta.splice(contentIndex, 1);
+          this.$root.updateBlockOrder(this.currentPage(), this.currentPage().contentMeta);
+        },
+      });
     },
     addBlockToPage(blockKey, currentPage) {
       this.$root.addBlockToPage(blockKey, currentPage);
