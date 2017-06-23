@@ -1,8 +1,9 @@
 <template>
   <div id='home' class="section">
     <div class="container">
+      <new-page v-if="$root.user.uid"></new-page>
+      <hr v-if="$root.user.uid">
       <h1 class="title is-1">Hello</h1>
-      <new-page></new-page>
     </div>
   </div>
 </template>

@@ -22,6 +22,7 @@
         </a>
         <a v-if="$root.user.uid" class="nav-item is-tab" @click="$root.logOut">Log out</a>
         <router-link v-else to="/login" class="nav-item is-tab">Login</router-link>
+        <new-page v-if="$root.user.uid"></new-page>
       </div>
     </div>
 

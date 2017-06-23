@@ -118,11 +118,15 @@ new Vue({
       // contents.forEach(e => contentRef.push(e));
     },
     toast(message) {
-      this.$toast.open(message);
+      this.$toast.open({
+        message,
+        position: 'bottom',
+      });
     },
     success(message) {
       this.$toast.open({
         message,
+        position: 'bottom',
         type: 'is-success',
       });
     },
@@ -130,6 +134,7 @@ new Vue({
       this.$toast.open({
         message,
         type: 'is-danger',
+        position: 'bottom',
       });
     },
   },

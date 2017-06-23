@@ -1,6 +1,6 @@
 <template>
   <div class="">
-    <section class="hero is-dark" v-if="user.uid">
+    <section class="hero is-dark" v-if="$root.user.uid">
       <div class="hero-body">
         <div class="container">
           <h3 class="title">
@@ -59,9 +59,9 @@ export default {
   },
   methods: {
     confirmDeleteBlock(contentKey) {
-      // find blockKey
-      const blockId = this.contentMeta.find(obj => obj.content['.key'] === contentKey).block['.value'];
-      this.$log.log(contentKey, blockId);
+      const contentIndex = this.contentMeta.map(e => e.content).indexOf(contentKey);
+      this.contentMeta.splice(contentIndex, 1);
+      this.$root.updateBlockOrder(this.currentPage(), this.currentPage().contentMeta);
     },
     addBlockToPage(blockKey, currentPage) {
       this.$root.addBlockToPage(blockKey, currentPage);
@@ -130,10 +130,20 @@ export default {
    display: block;
    top: 20px;
    left: 20px;
- }
- .mu-handle-container {
-   position: relative;
    cursor: grab;
+ }
+ .mu-clear {
+   position: absolute;
+   display: block;
+   top: 20px;
+   right: 20px;
+   cursor: pointer;
+ }
+ .mu-container {
+   position: relative;
+ }
+ .mu-container .mu-object:hover {
+   opacity: .75;
  }
  .sortable-chosen .mu-handle {
    cursor: grabbing;
