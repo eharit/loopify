@@ -4,13 +4,13 @@
       <div class="hero-body">
         <div class="container">
           <h3 class="title">
-            Hi {{this.user.displayName}}
+            {{currentPage().title}}
           </h3>
-          <h4 class="subtitle">Edit your page here</h4>
+          <h4 class="subtitle">Page admin {{user.displayName}}</h4>
           <div class="level">
             <div class="level-left">
               <b-dropdown v-model="blockToAdd" class="is-pulled-left">
-                <button class="button is-primary" slot="trigger">
+                <button class="button is-warning" slot="trigger">
                     <span>Add Block</span>
                     <b-icon icon="arrow_drop_down"></b-icon>
                 </button>
@@ -21,7 +21,7 @@
             </b-dropdown>
             </div>
             <div class="level-right">
-              <a class="button is-danger is-outlined" @click="confirmDeletePage(currentPage())">
+              <a class="button is-warning is-outlined" @click="confirmDeletePage(currentPage())">
                 <span>Delete</span>
                 <span class="icon is-small">
                   <i class="material-icons">delete</i>
@@ -36,12 +36,13 @@
       @end="$root.updateBlockOrder(currentPage(), contentMeta)"
       :options="{ handle: '.mu-handle' }">
       <component :is="blockComponent[index]"
-      :page="currentPage()"
-      :content="content"
-      v-for="(content, index) in blockContent"
-      :key="content['.key']"
-      @deleteBlock="confirmDeleteBlock(content['.key'])">
-    </component>
+        :page="currentPage()"
+        :content="content"
+        v-for="(content, index) in blockContent"
+        :key="content['.key']"
+        @deleteBlock="confirmDeleteBlock(content['.key'])"
+        @addPhoto="addPhotoToBlock(content['.key'])">
+      </component>
     </draggable>
   </div>
 </template>
@@ -55,25 +56,42 @@ export default {
       content: this.$root.content || [],
       user: this.$root.user || {},
       blockToAdd: '',
+      imageToUpload: '',
     };
   },
   methods: {
     confirmDeleteBlock(contentKey) {
-      this.$dialog.confirm({
-        title: 'Deleting block',
-        message: 'Are you sure you want to <strong>delete</strong> this block? This action cannot be undone.',
-        confirmText: 'Delete Block',
-        type: 'is-danger',
-        hasIcon: true,
-        onConfirm: () => {
-          const contentIndex = this.contentMeta.map(e => e.content).indexOf(contentKey);
-          this.contentMeta.splice(contentIndex, 1);
-          this.$root.updateBlockOrder(this.currentPage(), this.currentPage().contentMeta);
-        },
-      });
+      if (this.currentPage().contentMeta.map(e => e).length > 1) {
+        this.$dialog.confirm({
+          title: 'Deleting block',
+          message: 'Are you sure you want to <strong>delete</strong> this block? This action cannot be undone.',
+          confirmText: 'Delete Block',
+          type: 'is-danger',
+          hasIcon: true,
+          onConfirm: () => {
+            const contentIndex = this.contentMeta.map(e => e.content).indexOf(contentKey);
+            this.contentMeta.splice(contentIndex, 1);
+            this.$root.updateBlockOrder(this.currentPage(), this.currentPage().contentMeta);
+          },
+        });
+      } else {
+        this.$root.danger('At least one block per page required');
+      }
     },
     addBlockToPage(blockKey, currentPage) {
       this.$root.addBlockToPage(blockKey, currentPage);
+    },
+    addPhotoToBlock(blockKey) {
+      this.$dialog.confirm({
+        title: 'Add photo',
+        message: 'Choose a photo from your computer. <input type="file" name="pic" accept="image/*" v-model="imageToUpload">',
+        confirmText: 'Add Photo',
+        type: 'is-info',
+        hasIcon: true,
+        onConfirm: () => {
+          this.$log.log(blockKey, this.imageToUpload);
+        },
+      });
     },
     confirmDeletePage(data) {
       this.$dialog.confirm({
@@ -121,7 +139,13 @@ export default {
       this.contentMeta = this.currentPage().contentMeta;
     },
     blockToAdd() {
-      this.addBlockToPage(this.blockToAdd, this.currentPage());
+      if (this.blockToAdd !== null) {
+        this.addBlockToPage(this.blockToAdd, this.currentPage());
+        this.blockToAdd = null;
+      }
+    },
+    contentMeta() {
+      this.contentMeta = this.currentPage().contentMeta;
     },
   },
   components: {
@@ -141,6 +165,13 @@ export default {
    left: 20px;
    cursor: grab;
  }
+ .mu-image {
+   position: absolute;
+   display: block;
+   top: 20px;
+   right: calc(50% - 10px);
+   cursor: pointer;
+ }
  .mu-clear {
    position: absolute;
    display: block;
@@ -150,6 +181,9 @@ export default {
  }
  .mu-container {
    position: relative;
+ }
+ .mu-container .mu-object {
+   opacity: .35;
  }
  .mu-container .mu-object:hover {
    opacity: .75;

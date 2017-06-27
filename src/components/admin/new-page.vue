@@ -2,9 +2,9 @@
   <div id="new-page">
     <!-- new page -->
       <div class="title" v-if="createPageClosed">
-        <a class="button is-primary" @click="opencreatePage">
+        <a class="button is-warning" @click="opencreatePage">
           <span class="icon is-small">
-            <i class="material-icons">add</i>
+            <i class="material-icons">add_circle</i>
           </span>
           <span>Add Page</span>
         </a>
@@ -26,7 +26,7 @@
         </b-field>
         <div class="field">
           <p class="control">
-            <button class="button is-primary" type="button" name="submit" @click="createPage(newPage)">Add New Page</button>
+            <button :disabled="!(progress == 100)" class="button is-primary" type="button" name="submit" @click="createPage(newPage)">Add New Page</button>
           </p>
         </div>
       </div>

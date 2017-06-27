@@ -2,6 +2,7 @@
   <div id='home' class="section">
     <div class="container">
       <new-page v-if="$root.user.uid"></new-page>
+      <!-- <button @click="$root.setData()">setdata</button> -->
       <hr v-if="$root.user.uid">
       <h1 class="title is-1">Hello</h1>
       <div class="content">

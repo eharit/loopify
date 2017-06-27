@@ -1,7 +1,8 @@
 <template>
   <section class="hero is-medium is-primary is-bold">
     <div class="hero-body mu-container">
-      <i v-if="$root.user.uid"  class="material-icons mu-handle mu-object">&#xE25D;</i>
+      <i v-if="$root.user.uid" class="material-icons mu-handle mu-object">&#xE25D;</i>
+      <i v-if="$root.user.uid" class="material-icons mu-image mu-object" @click="addPhoto">add_a_photo</i>
       <i v-if="$root.user.uid" class="material-icons mu-clear mu-object" @click="deleteBlock">cancel</i>
       <div class="container title is-1" :data-content-id="`${content['.key']}-title`">
         <medium-editor
@@ -20,7 +21,7 @@
 import editor from 'vue2-medium-editor';
 
 export default {
-  name: 'Page1',
+  name: 'HeroBlock',
   data() {
     return {
       title: this.content.title.value,
@@ -41,6 +42,9 @@ export default {
     },
     deleteBlock() {
       this.$emit('deleteBlock');
+    },
+    addPhoto() {
+      this.$emit('addPhoto');
     },
   },
 };

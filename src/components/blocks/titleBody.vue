@@ -28,7 +28,7 @@
 import editor from 'vue2-medium-editor';
 
 export default {
-  name: 'Page1',
+  name: 'TitleBodyBlock',
   data() {
     return {
       title: this.content.title.value,

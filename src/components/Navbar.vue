@@ -18,11 +18,9 @@
           <figure class="image is-16x16" style="margin-right: 8px;">
             <img :src="$root.user.photoURL" >
           </figure>
-          Profile
         </a>
         <a v-if="$root.user.uid" class="nav-item is-tab" @click="$root.logOut">Log out</a>
         <router-link v-else to="/login" class="nav-item is-tab">Login</router-link>
-        <new-page v-if="$root.user.uid"></new-page>
       </div>
     </div>
 

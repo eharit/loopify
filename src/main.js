@@ -57,22 +57,23 @@ new Vue({
         });
       });
     },
-    updateBlockOrder(currentPage, contentMeta) {
-      // this.$log.log(currentPage, contentMeta);
+    updateBlockOrder(currentPage, contentMeta, isDel) {
+      this.$log.log(currentPage, contentMeta);
       if (currentPage && contentMeta) {
         pageRef.child(currentPage['.key']).child('contentMeta').set(contentMeta)
         .then(() => {
-          this.success('Block order changed');
-        })
-        .then(() => {
-          this.danger('Block order has not changed');
+          if (!isDel) {
+            this.toast('Block order has changed');
+          } else {
+            this.toast('Block has been deleted');
+          }
         });
       }
     },
     createPage(page) {
       const self = this;
       const newPage = {
-        routeName: page.title.toLowerCase(),
+        routeName: page.title.toLowerCase().replace(/\s/g, '-'),
         title: page.title,
         index: this.pages.length,
         contentMeta: [],
@@ -94,7 +95,7 @@ new Vue({
       .then(() => {
         Vue.delete(data, '.key');
         this.$router.push('/');
-        this.success('Page deleted successfully');
+        this.toast('Page have been deleted');
       });
     },
     updateContent(content, textKey, text) {
@@ -111,11 +112,11 @@ new Vue({
       this.ui.reset();
     },
     setData() {
-      const pages = this.pages;
+      // const pages = this.pages;
       // const blocks = this.blocks;
       // const content = this.content;
-      pages.forEach(e => pageRef.child(e['.key']).child('contentMeta').set([{ block: 'xxx', content: 'xxx' }, { block: 'xxx', content: 'xxx' }]));
       // contents.forEach(e => contentRef.push(e));
+      // blockRef.push('h1PageTitle');
     },
     toast(message) {
       this.$toast.open({
