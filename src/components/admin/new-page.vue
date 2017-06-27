@@ -1,13 +1,13 @@
 <template>
   <div id="new-page">
     <!-- new page -->
-      <div class="title" v-if="createPageClosed">
-        <a class="button is-primary" @click="opencreatePage">
+      <div v-if="createPageClosed">
+        <span @click="opencreatePage" class="button is-white">
           <span class="icon is-small">
-            <i class="material-icons">add</i>
+            <i class="material-icons">add_circle</i>
           </span>
           <span>Add Page</span>
-        </a>
+        </span>
       </div>
       <div class="box" v-if="!createPageClosed">
         <button v-if="user.uid" class="delete is-small is-pulled-right" @click="closecreatePage"></button>
