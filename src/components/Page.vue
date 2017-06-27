@@ -4,7 +4,7 @@
       <div class="hero-body">
         <div class="container">
           <h3 class="title">
-            {{currentPage().title}}
+            {{currentPage().title}}<sup>({{dragged}})</sup>
           </h3>
           <h4 class="subtitle">Page admin {{user.displayName}}</h4>
           <div class="level">
@@ -33,7 +33,8 @@
       </div>
     </section>
     <draggable v-model="contentMeta"
-      @end="$root.updateBlockOrder(currentPage(), contentMeta)"
+      @end="dragEnd"
+      @start="dragStart"
       :options="{ handle: '.mu-handle' }">
       <component :is="blockComponent[index]"
         :page="currentPage()"
@@ -57,9 +58,19 @@ export default {
       user: this.$root.user || {},
       blockToAdd: '',
       imageToUpload: '',
+      dragged: false,
     };
   },
   methods: {
+    dragStart() {
+      setTimeout(() => { this.dragged = true; }, 100);
+      this.currentPage().contentMeta = this.contentMeta;
+    },
+    dragEnd() {
+      this.$root.updateBlockOrder(this.currentPage(), this.contentMeta);
+      this.currentPage().contentMeta = this.contentMeta;
+      this.dragged = false;
+    },
     confirmDeleteBlock(contentKey) {
       if (this.currentPage().contentMeta.map(e => e).length > 1) {
         this.$dialog.confirm({
@@ -145,7 +156,7 @@ export default {
       }
     },
     contentMeta() {
-      this.contentMeta = this.currentPage().contentMeta;
+      this.currentPage().contentMeta = this.contentMeta;
     },
   },
   components: {

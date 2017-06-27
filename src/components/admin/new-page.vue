@@ -2,7 +2,7 @@
   <div id="new-page">
     <!-- new page -->
       <div v-if="createPageClosed">
-        <span @click="opencreatePage" class="button is-white">
+        <span @click="opencreatePage" class="button is-warning">
           <span class="icon is-small">
             <i class="material-icons">add_circle</i>
           </span>
