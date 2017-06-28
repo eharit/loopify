@@ -27,6 +27,8 @@ const db = app.database();
 const pageRef = db.ref('pages');
 const blockRef = db.ref('blocks');
 const contentRef = db.ref('content');
+// cloud storage
+const storageRef = firebase.storage().ref();
 
 /* eslint-disable no-new */
 new Vue({
@@ -38,6 +40,7 @@ new Vue({
     user: {},
     ui: new firebaseui.auth.AuthUI(firebase.auth()),
     loading: false,
+    imgUrl: '',
   },
   firebase: {
     pages: pageRef,
@@ -45,6 +48,14 @@ new Vue({
     content: contentRef,
   },
   methods: {
+    uploadFile(fileList) {
+      const imgRef = storageRef.child(`images/${fileList[0].name}`);
+      imgRef.put(fileList[0])
+      .then(() => {
+        imgRef.getDownloadURL().then((url) => { this.imgUrl = url; });
+        this.loading = false;
+      });
+    },
     addBlockToPage(blockKey, currentPage) {
       const contentMeta = currentPage.contentMeta;
       this.$log.log(blockKey, currentPage['.key']);

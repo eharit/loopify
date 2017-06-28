@@ -149,14 +149,14 @@ export default {
     $route() {
       this.contentMeta = this.currentPage().contentMeta;
     },
+    contentMeta() {
+      this.currentPage().contentMeta = this.contentMeta;
+    },
     blockToAdd() {
       if (this.blockToAdd !== null) {
         this.addBlockToPage(this.blockToAdd, this.currentPage());
         this.blockToAdd = null;
       }
-    },
-    contentMeta() {
-      this.currentPage().contentMeta = this.contentMeta;
     },
   },
   components: {
@@ -180,7 +180,7 @@ export default {
    position: absolute;
    display: block;
    top: 20px;
-   right: calc(50% - 10px);
+   left: 60px;
    cursor: pointer;
  }
  .mu-clear {
