@@ -1,6 +1,6 @@
 # loopify
 
-> A lightweight CMS for small SPA's featuring on screen editing and a Firebase backend.
+> A lightweight CMS for small SPA's featuring medium.js on screen editing, drag and drop block redistribution on page, dynamic component routing and importing. Currently served by a Firebase db/storage backend.
 
 ## Build Setup
 
